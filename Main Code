@@ -65,13 +65,16 @@ def get_bet():
         number3 = input("Enter the three numbers you want to bet on (Three numbers across): ")
         return ("number3", number3)
     elif bet_type == 4:
-        number4 = input("Enter the three numbers you want to bet on (Three numbers across): ")
+        number4 = input("Enter the four numbers you want to bet on (Four numbers across): ")
         return ("number4", number4)
     elif bet_type == 5:
         option = input("Bet Even or Odd: ").lower()
         return ("even_odd", option)
     elif bet_type == 6:
         color ("Bet Red or Black: ").lower()
+    elif bet_type == 7:
+        option2 = input("Bet '1 to 18' OR '19 to 36': ").lower()
+        return ("range1", option2)
         
         
         
@@ -88,4 +91,3 @@ def main_game():
 
 if __name__ == "__main__":
     main_game()
-
