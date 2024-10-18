@@ -8,7 +8,7 @@ roulette_numbers = [
 
 def print_board():
     board = '''
-    American Roulette Board
+           American Roulette Board
 
    --------------------------------------
   |        |   0      |     00  | 1 TO 18|
@@ -16,7 +16,7 @@ def print_board():
   |        |  4B  |  5R  |  6B  |  EVEN  |
   |        |  7R  |  8B  |  9R  |--------|
   |--------|  10B |  11B |  12R |   <>   |
-  |        |  13B |  14R |  15B |   RED  |
+  |        |  13B |  14R |  15B |  RED   |
   | 2nd 12 |  16R |  17B |  18R |--------|
   |        |  19R |  20B |  21R |   <>   |
   |--------|  22B |  23R |  24B |  BLACK |
@@ -29,15 +29,15 @@ def print_board():
             --------------------
             
     Betting Options:
-    1. Single Number Bet (35-1 payout. One number) "Straight up."
-    2. Double Number Bet (17-1 payout. Two numbers next to each other) "Split."
-    3. Three Number Bet (11-1 Payout. Three numbers across) "Street."
-    4. Four Number Bet (8-1 payout. Four numbers touching) "Corner."
+    1. Single Number Bet (35x payout. One number) "Straight up."
+    2. Double Number Bet (17x payout. Two numbers next to each other) "Split."
+    3. Three Number Bet (11x Payout. Three numbers across) "Street."
+    4. Four Number Bet (8x payout. Four numbers touching) "Corner."
     5. Even / Odd Bet (Even Payout.)
     6. Red / Black Bet (Even payout.)
     7. 1 to 18 / 19 to 36 Bet (Even Payout.)
-    8. Dozen Bet (2-1 payout. 1 to 12, 13 to 24, 25 to 36)
-    9. Column Bet (2-1 payout. 1st, 2nd, 3rd row)
+    8. Dozen Bet (2x payout. 1 to 12, 13 to 24, 25 to 36)
+    9. Column Bet (2x payout. 1st, 2nd, 3rd row)
 '''
     print(board)
     
@@ -59,31 +59,109 @@ def get_bet():
         number = input("Enter the number you want to bet on (0-36 or 00): ")
         return ("number", number)
     elif bet_type == 2:
-        number2 = input("Enter the two numbers you want to bet on (Two numbers next to each other): ")
-        return ("number2", number2)
+        num1 = input("Enter the first number: ")
+        num2 = input("Enter the second number: ")
+        return ("number2", (num1, num2))
     elif bet_type == 3:
-        number3 = input("Enter the three numbers you want to bet on (Three numbers across): ")
-        return ("number3", number3)
+        num1 = input("Enter the first number: ")
+        num2 = input("Enter the second number: ")
+        num3 = input("Enter the third number: ")
+        return ("number3", (num1, num2, num3))
     elif bet_type == 4:
-        number4 = input("Enter the four numbers you want to bet on (Four numbers across): ")
-        return ("number4", number4)
+        num1 = input("Enter the first number: ")
+        num2 = input("Enter the second number: ")
+        num3 = input("Enter the third number: ")
+        num4 = input("Enter the fourth number: ")
+        return ("number4", (num1, num2, num3, num4))
     elif bet_type == 5:
         option = input("Bet Even or Odd: ").lower()
         return ("even_odd", option)
     elif bet_type == 6:
-        color ("Bet Red or Black: ").lower()
+        color = input("Bet Red or Black: ").lower()
+        return ("color", color)
     elif bet_type == 7:
-        option2 = input("Bet '1 to 18' OR '19 to 36': ").lower()
-        return ("range1", option2)
-        
-        
-        
+        range_bet = input("Bet '1 to 18' OR '19 to 36': ").lower()
+        return ("range", range_bet)
+    elif bet_type == 5:
+        dozen = input("Bet on a dozen (1-12, 13-24, 25-36): ").lower()
+        return ("dozen", dozen)
+    elif bet_type == 6:
+        column = input("Bet on a column (1st, 2nd, 3rd): ").lower()
+        return ("column", column)
+    else:
+        print("Invalid bet type. Please try again.")
+        return get_bet()
+
+def spin_wheel():
+    return random.choice(roulette_numbers)
 
 
-def color_bet():
+def check_bet(bet, result):
     red = ['1', '3', '5', '7', '9', '12', '14', '16', '18', '19', '21', '23', '25', '27', '30', '32', '34', '36']
     black = ['2', '4', '6', '8', '10', '11', '13', '15', '17', '20', '22', '24', '26', '28', '29', '31', '33', '35']
-    green = ['0', '00'] 
+
+    def numeric_value(value):
+        try:
+            int(value)
+            return True
+        
+        except ValueError:
+            return False
+
+    if bet[0] == "number":
+        if bet[1] == result:
+            return 1
+    elif bet[0] == "number2":
+        if result in bet[1]:
+            return 17
+    elif bet[0] == "number3":
+        if result in bet[1]:
+            return 11
+    elif bet[0] == "number4":
+        if result in bet[1]:
+            return 8
+    elif bet[0] == "even_odd":
+        if result in ["0", "00"]:
+            return 0
+        if bet[1] == "even" and int(result) % 2 == 0:
+            return 1
+        elif bet[1] == "odd" and int(result) % 2 != 0:
+            return 1
+    elif bet[0] == "color":
+        if bet[1] == "red" and result in red_numbers:
+            return 1
+        elif bet[1] == "black" and result in black_numbers:
+            return 1
+    elif bet[0] == "range":
+        if bet[1] == "1-18" and numeric_value(result) and 1 <= int(result) <= 18:
+            return 1
+        elif bet[1] == "19-36" and numeric_value(result) and 19 <= int(result) <= 36:
+            return 1
+    elif bet[0] == "dozen":
+        if bet[1] == "1-12" and numeric_value(result) and 1 <= int(result) <= 12:
+            return 2
+        elif bet[1] == "13-24" and numeric_value(result) and 13 <= int(result) <= 24:
+            return 2
+        elif bet[1] == "25-36" and numeric_value(result) and 25 <= int(result) <= 36:
+            return 2
+    elif bet[0] == "column":
+        column_1 = ["1", "4", "7", "10", "13", "16", "19", "22", "25", "28", "31", "34"]
+        column_2 = ["2", "5", "8", "11", "14", "17", "20", "23", "26", "29", "32", "35"]
+        column_3 = ["3", "6", "9", "12", "15", "18", "21", "24", "27", "30", "33", "36"]
+        if bet[1] == "1st" and result in column_1:
+            return 2
+        elif bet[1] == "2nd" and result in column_2:
+            return 2
+        elif bet[1] == "3rd" and result in column_3:
+            return 2
+    return 0
+
+#this code can be tricky, so I'll explain a bit: the check_bet method evaluates the
+#players bet in the game to determine whether the player won or not and the payout recieved.
+#It does this by calling the results from the user input in get_bet, and seeing if the chosen number from
+#spin_wheel matches the result. The bet[0] represents the type of bet ("number") and bet[1] represents the
+#specific number of the bet. Return is the payout amount. the method numeric_value just checks to make sure
+#numbers are input to avoid error. This will all be indexed within the main_game method which I haven't done yet. 
 
 def main_game():
     print_board()
