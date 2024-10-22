@@ -156,6 +156,21 @@ def check_bet(bet, result):
             return 2
     return 0
 
+def monetary_system(balance):
+    print(f"\nCurrent Balance: ${balance}")
+    
+    while True:
+        try:
+            bet_amount = float(input("Enter the amount you want to bet: $"))
+            if bet_amount > balance:
+                print("You don't have enough money to make this bet. Try again.")
+            elif bet_amount <= 0:
+                print("Bet amount must be greater than 0. Try again.")
+            else:
+                return bet_amount
+        except ValueError:
+            print("Invalid input. Please enter a numerical value.")
+
 #this code can be tricky, so I'll explain a bit: the check_bet method evaluates the
 #players bet in the game to determine whether the player won or not and the payout recieved.
 #It does this by calling the results from the user input in get_bet, and seeing if the chosen number from
