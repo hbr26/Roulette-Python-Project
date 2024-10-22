@@ -181,13 +181,34 @@ def monetary_system(balance):
 def main_game():
     print_board()
     bet = get_bet()
-    result = spin_wheel()
-    print(f"\nThe roulette wheel spins... The ball lands on {result}!\n")
+    bet_amount = monetary_system(balance)  # Get the bet amount
+        
+        # Deduct the bet amount from the player's balance before spinning the wheel
+        balance -= bet_amount
+        
+        result = spin_wheel()
+        print(f"The wheel landed on {result}.")
 
-    if check_bet(bet, result):
-        print("Congratulations! You won your bet!")
-    else:
-        print("Sorry, you lost your bet.")
+        # Check if the player won and get the payout multiplier
+        payout = check_bet(bet, result)  
+        
+        if payout > 0:
+            winnings = bet_amount * payout
+            balance += winnings
+            print(f"Congratulations! You won ${winnings}. New Balance: ${balance}")
+        else:
+            print(f"Sorry, you lost the bet. New Balance: ${balance}")
+        
+        if balance <= 0:
+            print("You're out of money. Game over!")
+            break
+        
+        # Ask if the player wants to continue
+        play_again = input("Do you want to keep playing? (yes/no): ").lower()
+        if play_again != "yes":
+            print(f"You're leaving with ${balance}. Thanks for playing!")
+            break
+
 
 if __name__ == "__main__":
     main_game()
