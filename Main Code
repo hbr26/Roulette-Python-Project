@@ -129,9 +129,9 @@ def check_bet(bet, result):
             return 1
     elif bet[0] == "color":
         if bet[1] == "red" and result in red:
-            return 1
+            return 2  
         elif bet[1] == "black" and result in black:
-            return 1
+            return 2 
     elif bet[0] == "range":
         if bet[1] == "1-18" and numeric_value(result) and 1 <= int(result) <= 18:
             return 1
@@ -157,7 +157,7 @@ def check_bet(bet, result):
     return 0
 
 def monetary_system(balance):
-    print(f"\nCurrent Balance: ${balance}")
+    print(f"\nCurrent balance: ${balance}")
     
     while True:
         try:
@@ -179,46 +179,157 @@ def monetary_system(balance):
 #numbers are input to avoid error. This will all be indexed within the main_game method which I haven't done yet. 
 
 def main_game():
-    balance = int(input(f"Welcome to Roulette! How much would you like to bet today?")
-    print_board()
-    
-    play_again = "yes"  
-    
-    while balance > 0 and play_again == "yes":
-        print(f"\nCurrent balance: ${balance}")
-        bet = get_bet()
-        bet_amount = monetary_system(balance)  # Get the bet amount
-            
-        # Deduct the bet amount from the player's balance before spinning the wheel
-        balance -= bet_amount
-            
-        result = spin_wheel()
-        print(f"The wheel landed on {result}.")
-    
-        # Check if the player won and get the payout multiplier
-        payout = check_bet(bet, result)
-    
-        if payout > 0:
-            winnings = bet_amount * payout
-            balance += winnings
-            print(f"Congratulations! You won ${winnings}. New Balance: ${balance}")
+    players_amt = int(input("How many people are playing today? Maximum of three players: "))
+
+    if players_amt == 1:
+        balance_one = int(input("Welcome to Roulette, player 1! How much would you like to start with? "))
+        print_board()
+
+        play_again = "yes"
+        while balance_one > 0 and play_again == "yes":
+            print(f"\nCurrent balance: ${balance_one}")
+            bet = get_bet()
+            bet_amount = monetary_system(balance_one)
+            balance_one -= bet_amount
+
+            result = spin_wheel()
+            print(f"The wheel landed on {result}.")
+
+            payout = check_bet(bet, result)
+            if payout > 0:
+                winnings = bet_amount * payout
+                balance_one += winnings
+                print(f"Congratulations! You won ${winnings}. New balance: ${balance_one}")
+            else:
+                print(f"Sorry, you lost the bet. New balance: ${balance_one}")
+
+            if balance_one <= 0:
+                print("You're out of money. Game over!")
+                break
+
+            play_again = input("Do you want to keep playing? (yes/no): ").lower()
+
+        if balance_one > 0:
+            print(f"You're leaving with ${balance_one}. Thanks for playing!")
         else:
-            print(f"Sorry, you lost the bet. New Balance: ${balance}")
-        
-        if balance <= 0:
-            print("You're out of money. Game over!")
-            break
-        
-        # Ask if the player wants to continue
-        play_again = input("Do you want to keep playing? (yes/no): ").lower()
-    
-    # This message will appear if the player quits or loses all the money
-    if balance > 0:
-        print(f"You're leaving with ${balance}. Thanks for playing!")
-    else:
-        print("Game over! You have no money left.")
+            print("Game over! You have no money left.")
 
+    elif players_amt == 2:
+        balance_one = int(input("Welcome to Roulette, player 1! How much would you like to start with? "))
+        balance_two = int(input("Welcome to Roulette, player 2! How much would you like to start with? "))
+        print_board()
 
+        play_again = "yes"
+        while (balance_one > 0 or balance_two > 0) and play_again == "yes":
+            if balance_one > 0:
+                print(f"\nPlayer 1's balance: ${balance_one}")
+                bet_one = get_bet()
+                bet_amount_one = monetary_system(balance_one)
+                balance_one -= bet_amount_one
+
+            if balance_two > 0:
+                print(f"\nPlayer 2's balance: ${balance_two}")
+                bet_two = get_bet()
+                bet_amount_two = monetary_system(balance_two)
+                balance_two -= bet_amount_two
+
+            result = spin_wheel()
+            print(f"The wheel landed on {result}.")
+
+            if balance_one > 0:
+                payout_one = check_bet(bet_one, result)
+                if payout_one > 0:
+                    winnings_one = bet_amount_one * payout_one
+                    balance_one += winnings_one
+                    print(f"Player 1 won ${winnings_one}. New balance: ${balance_one}")
+                else:
+                    print(f"Player 1 lost. New balance: ${balance_one}")
+
+            if balance_two > 0:
+                payout_two = check_bet(bet_two, result)
+                if payout_two > 0:
+                    winnings_two = bet_amount_two * payout_two
+                    balance_two += winnings_two
+                    print(f"Player 2 won ${winnings_two}. New balance: ${balance_two}")
+                else:
+                    print(f"Player 2 lost. New balance: ${balance_two}")
+
+            if balance_one <= 0 and balance_two <= 0:
+                print("Both players are out of money. Game over!")
+                break
+
+            play_again = input("Do you want to keep playing? (yes/no): ").lower()
+
+        print(f"Player 1's final balance: ${balance_one}")
+        print(f"Player 2's final balance: ${balance_two}")
+        print("Thanks for playing!")
+
+    elif players_amt == 3:
+        balance_one = int(input("Welcome to Roulette, player 1! How much would you like to start with? "))
+        balance_two = int(input("Welcome to Roulette, player 2! How much would you like to start with? "))
+        balance_three = int(input("Welcome to Roulette, player 3! How much would you like to start with? "))
+        print_board()
+
+        play_again = "yes"
+        while (balance_one > 0 or balance_two > 0 or balance_three > 0) and play_again == "yes":
+            if balance_one > 0:
+                print(f"\nPlayer 1's balance: ${balance_one}")
+                bet_one = get_bet()
+                bet_amount_one = monetary_system(balance_one)
+                balance_one -= bet_amount_one
+
+            if balance_two > 0:
+                print(f"\nPlayer 2's balance: ${balance_two}")
+                bet_two = get_bet()
+                bet_amount_two = monetary_system(balance_two)
+                balance_two -= bet_amount_two
+
+            if balance_three > 0:
+                print(f"\nPlayer 3's balance: ${balance_three}")
+                bet_three = get_bet()
+                bet_amount_three = monetary_system(balance_three)
+                balance_three -= bet_amount_three
+
+            result = spin_wheel()
+            print(f"The wheel landed on {result}.")
+
+            if balance_one > 0:
+                payout_one = check_bet(bet_one, result)
+                if payout_one > 0:
+                    winnings_one = bet_amount_one * payout_one
+                    balance_one += winnings_one
+                    print(f"Player 1 won ${winnings_one}. New balance: ${balance_one}")
+                else:
+                    print(f"Player 1 lost. New balance: ${balance_one}")
+
+            if balance_two > 0:
+                payout_two = check_bet(bet_two, result)
+                if payout_two > 0:
+                    winnings_two = bet_amount_two * payout_two
+                    balance_two += winnings_two
+                    print(f"Player 2 won ${winnings_two}. New balance: ${balance_two}")
+                else:
+                    print(f"Player 2 lost. New balance: ${balance_two}")
+
+            if balance_three > 0:
+                payout_three = check_bet(bet_three, result)
+                if payout_three > 0:
+                    winnings_three = bet_amount_three * payout_three
+                    balance_three += winnings_three
+                    print(f"Player 3 won ${winnings_three}. New balance: ${balance_three}")
+                else:
+                    print(f"Player 3 lost. New balance: ${balance_three}")
+
+            if balance_one <= 0 and balance_two <= 0 and balance_three <= 0:
+                print("All players are out of money. Game over!")
+                break
+
+            play_again = input("Do you want to keep playing? (yes/no): ").lower()
+
+        print(f"Player 1's final balance: ${balance_one}")
+        print(f"Player 2's final balance: ${balance_two}")
+        print(f"Player 3's final balance: ${balance_three}")
+        print("Thanks for playing!")
 if __name__ == "__main__":
     main_game()
 
