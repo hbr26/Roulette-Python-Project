@@ -166,6 +166,13 @@ def check_bet(bet, result):
 def main_game():
     print_board()
     bet = get_bet()
+    result = spin_wheel()
+    print(f"\nThe roulette wheel spins... The ball lands on {result}!\n")
+
+    if check_bet(bet, result):
+        print("Congratulations! You won your bet!")
+    else:
+        print("Sorry, you lost your bet.")
 
 if __name__ == "__main__":
     main_game()
