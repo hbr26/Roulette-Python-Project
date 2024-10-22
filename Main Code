@@ -80,12 +80,12 @@ def get_bet():
         color = input("Bet Red or Black: ").lower()
         return ("color", color)
     elif bet_type == 7:
-        range_bet = input("Bet '1 to 18' OR '19 to 36': ").lower()
+        range_bet = input("Bet '1-18' OR '19-36': ").lower()
         return ("range", range_bet)
-    elif bet_type == 5:
+    elif bet_type == 8:
         dozen = input("Bet on a dozen (1-12, 13-24, 25-36): ").lower()
         return ("dozen", dozen)
-    elif bet_type == 6:
+    elif bet_type == 9:
         column = input("Bet on a column (1st, 2nd, 3rd): ").lower()
         return ("column", column)
     else:
@@ -128,9 +128,9 @@ def check_bet(bet, result):
         elif bet[1] == "odd" and int(result) % 2 != 0:
             return 1
     elif bet[0] == "color":
-        if bet[1] == "red" and result in red_numbers:
+        if bet[1] == "red" and result in red:
             return 1
-        elif bet[1] == "black" and result in black_numbers:
+        elif bet[1] == "black" and result in black:
             return 1
     elif bet[0] == "range":
         if bet[1] == "1-18" and numeric_value(result) and 1 <= int(result) <= 18:
@@ -176,3 +176,4 @@ def main_game():
 
 if __name__ == "__main__":
     main_game()
+
