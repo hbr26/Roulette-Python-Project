@@ -110,7 +110,7 @@ def check_bet(bet, result):
 
     if bet[0] == "number":
         if bet[1] == result:
-            return 1
+            return 35
     elif bet[0] == "number2":
         if result in bet[1]:
             return 17
@@ -124,9 +124,9 @@ def check_bet(bet, result):
         if result in ["0", "00"]:
             return 0
         if bet[1] == "even" and int(result) % 2 == 0:
-            return 1
+            return 2
         elif bet[1] == "odd" and int(result) % 2 != 0:
-            return 1
+            return 2
     elif bet[0] == "color":
         if bet[1] == "red" and result in red:
             return 2  
@@ -134,27 +134,34 @@ def check_bet(bet, result):
             return 2 
     elif bet[0] == "range":
         if bet[1] == "1-18" and numeric_value(result) and 1 <= int(result) <= 18:
-            return 1
+            return 2
         elif bet[1] == "19-36" and numeric_value(result) and 19 <= int(result) <= 36:
-            return 1
+            return 2
     elif bet[0] == "dozen":
         if bet[1] == "1-12" and numeric_value(result) and 1 <= int(result) <= 12:
-            return 2
+            return 3
         elif bet[1] == "13-24" and numeric_value(result) and 13 <= int(result) <= 24:
-            return 2
+            return 3
         elif bet[1] == "25-36" and numeric_value(result) and 25 <= int(result) <= 36:
-            return 2
+            return 3
     elif bet[0] == "column":
         column_1 = ["1", "4", "7", "10", "13", "16", "19", "22", "25", "28", "31", "34"]
         column_2 = ["2", "5", "8", "11", "14", "17", "20", "23", "26", "29", "32", "35"]
         column_3 = ["3", "6", "9", "12", "15", "18", "21", "24", "27", "30", "33", "36"]
         if bet[1] == "1st" and result in column_1:
-            return 2
+            return 3
         elif bet[1] == "2nd" and result in column_2:
-            return 2
+            return 3
         elif bet[1] == "3rd" and result in column_3:
-            return 2
+            return 3
     return 0
+
+#this code can be tricky, so I'll explain a bit: the check_bet method evaluates the
+#players bet in the game to determine whether the player won or not and the payout recieved.
+#It does this by calling the results from the user input in get_bet, and seeing if the chosen number from
+#spin_wheel matches the result. The bet[0] represents the type of bet ("number") and bet[1] represents the
+#specific number of the bet. Return is the payout amount. the method numeric_value just checks to make sure
+#numbers are input to avoid error. This will all be indexed within the main_game method which I haven't done yet. 
 
 def monetary_system(balance):
     print(f"\nCurrent balance: ${balance}")
@@ -170,13 +177,6 @@ def monetary_system(balance):
                 return bet_amount
         except ValueError:
             print("Invalid input. Please enter a numerical value.")
-
-#this code can be tricky, so I'll explain a bit: the check_bet method evaluates the
-#players bet in the game to determine whether the player won or not and the payout recieved.
-#It does this by calling the results from the user input in get_bet, and seeing if the chosen number from
-#spin_wheel matches the result. The bet[0] represents the type of bet ("number") and bet[1] represents the
-#specific number of the bet. Return is the payout amount. the method numeric_value just checks to make sure
-#numbers are input to avoid error. This will all be indexed within the main_game method which I haven't done yet. 
 
 def main_game():
     players_amt = int(input("How many people are playing today? Maximum of three players: "))
@@ -330,6 +330,7 @@ def main_game():
         print(f"Player 2's final balance: ${balance_two}")
         print(f"Player 3's final balance: ${balance_three}")
         print("Thanks for playing!")
+        
 if __name__ == "__main__":
     main_game()
 
